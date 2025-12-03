@@ -202,8 +202,8 @@ export default function AccountsReceivableTable({ filter, search }) {
     },
 
     {
-      field: "description",
-      headerName: "Descripción",
+      field: "notes",
+      headerName: "Notas",
       width: 400,
       editable: true,
     },
