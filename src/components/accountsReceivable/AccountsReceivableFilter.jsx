@@ -1,8 +1,14 @@
 import { Box, Button, Card, Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
 
-export default function AccountsReceivableFilter() {
-  const [selected, setSelected] = useState("Todos");
+export default function AccountsReceivableFilter({
+  selected,
+  setSelected,
+  search,
+  setSearch,
+}) {
+  // const [selected, setSelected] = useState("Todos");
+
   const buttons = ["Todos", "Por cobrar", "Pagados"];
   return (
     <Box
@@ -68,6 +74,7 @@ export default function AccountsReceivableFilter() {
             size="small"
             label="Buscar..."
             variant="outlined"
+            onChange={(e) => setSearch(e.target.value)}
           />
         </Box>
       </Paper>

@@ -18,6 +18,8 @@ export const registerPayment = async (data) =>
   api.post("/registerPayment", data);
 export const addClientNotes = async (data) => api.post("/addClientNotes", data);
 export const createClient = async (data) => api.post("/createClient", data);
+export const paymentsMonthResume = async (data) =>
+  api.post("/paymentsMonthResume", data);
 
 // places
 export const getCantonesOptions = async () => api.get("/getCantones");
@@ -39,3 +41,8 @@ export const markNotificationAsUnread = async (data) =>
   await api.post("/markAsUnread", data);
 export const readAllNotifications = async (data) =>
   await api.post("/markAllAsRead", data);
+
+// files
+export const uploadFile = async (data) => await api.post("/uploadFile", data);
+export const downloadFile = async (data) =>
+  await api.post("/downloadFile", data);

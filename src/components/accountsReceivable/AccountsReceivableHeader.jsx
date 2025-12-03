@@ -38,7 +38,6 @@ export default function AccountsReceivableHeader() {
       </Box>
       <Box
         sx={{
-          width: "auto",
           width: "50%",
           display: "flex",
           justifyContent: "end",

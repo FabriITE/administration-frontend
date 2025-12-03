@@ -2,6 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import AccountsReceivableCard from "./AccountsReceivableCard";
 import { Wallet, TrendingUp, TrendingDown, List } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export default function AccountsReceivableResume() {
   const monthResume = {
@@ -10,7 +11,7 @@ export default function AccountsReceivableResume() {
     total_expenses: 250000,
     total_transactions: 48,
   };
-
+  const month_resume = useSelector((state) => state.monthInfo);
   return (
     <Box
       sx={{
@@ -24,19 +25,19 @@ export default function AccountsReceivableResume() {
     >
       <AccountsReceivableCard
         title="Total por Cobrar"
-        amount={`₡ ${monthResume.balance.toLocaleString("es-CR")}`}
+        amount={`₡ ${month_resume.total_receivable}`}
         color="#fef2f2"
         icon={<Wallet color="#e70000" />}
       />
       <AccountsReceivableCard
         title="Pagos Confirmados"
-        amount={`₡ ${monthResume.total_incomes.toLocaleString("es-CR")}`}
+        amount={`₡ ${month_resume.total_charged}`}
         color="#f0fdf4"
         icon={<TrendingUp color="#008000" />}
       />
       <AccountsReceivableCard
         title="Clientes activos"
-        amount={`₡ ${monthResume.total_expenses.toLocaleString("es-CR")}`}
+        amount={`${month_resume.active_clients}`}
         color="#eff6ff"
         icon={<TrendingDown color="#006bff" />}
       />

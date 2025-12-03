@@ -13,11 +13,13 @@ import {
 } from "@mui/material";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import PlaceIcon from "@mui/icons-material/Place";
+import PaymentIcon from "@mui/icons-material/Payment";
 import { CalendarMonth } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import AutocompleteInput from "../../AutocompleteInput";
-import { createClient } from "../../../utils/api";
 import { errorAlert, successAlert } from "../../alerts/alerts";
+import { useDispatch } from "react-redux";
+import { useClients } from "../../../hooks/clients/useClients";
 
 export default function NewClientDlg({ open, onClose }) {
   const {
@@ -27,10 +29,13 @@ export default function NewClientDlg({ open, onClose }) {
     control,
     reset,
   } = useForm();
+  const { registerClient } = useClients();
 
   const handleCloseDlg = () => {
     onClose(false);
   };
+
+  const dispatch = useDispatch();
 
   const [selectedProvincia, setSelectedProvincia] = useState({
     provincia: null,
@@ -46,16 +51,14 @@ export default function NewClientDlg({ open, onClose }) {
     const data = Object.fromEntries(new FormData(e.target));
     try {
       const payload = {
-        name: data.name,
-        san: data.san,
+        ...data,
         provincia: selectedProvincia.provincia,
         idProvincia: selectedProvincia.idProvincia,
         canton: selectedCanton.canton,
         idCanton: selectedCanton.idCanton,
-        start_date: data.start_date,
       };
 
-      const x = await createClient(payload);
+      await registerClient(payload);
       reset();
       onClose(true);
       successAlert("Cliente agregado correctamente", "colored");
@@ -107,9 +110,7 @@ export default function NewClientDlg({ open, onClose }) {
               </Grid>
             </Grid>
           </Box>
-
           <Divider />
-
           <Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <PlaceIcon />
@@ -138,13 +139,10 @@ export default function NewClientDlg({ open, onClose }) {
               </Grid>
             </Grid>
           </Box>
-
           <Divider />
-
           <Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
               <CalendarMonth />
-
               <Typography variant="subtitle1" fontWeight="bold">
                 Fecha de instalacion
               </Typography>
@@ -170,6 +168,41 @@ export default function NewClientDlg({ open, onClose }) {
                     cursor: "pointer",
                   },
                 }}
+              />
+            </Box>
+          </Box>
+          <Divider />
+
+          <Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <PaymentIcon />
+              <Typography variant="subtitle1" fontWeight="bold">
+                Pago
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "flex",
+                gap: 2,
+              }}
+            >
+              <TextField
+                name="payment_months"
+                label="Meses pagados"
+                size="small"
+                type="number"
+                // inputProps={{ min: 0 }}
+              />
+
+              <TextField
+                name="monthly_payment"
+                label="Mensualidad"
+                size="small"
+                type="number"
+                inputProps={{ step: "0.01", min: 0 }}
               />
             </Box>
           </Box>

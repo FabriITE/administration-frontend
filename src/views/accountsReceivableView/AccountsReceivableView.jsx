@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import AccountsReceivableHeader from "../../components/accountsReceivable/AccountsReceivableHeader";
 import AccountsReceivableFilter from "../../components/accountsReceivable/AccountsReceivableFilter";
@@ -6,7 +6,19 @@ import AccountsReceivableTable from "../../components/accountsReceivable/Account
 import "./AccountsReceivable.css";
 import AccountsReceivableResume from "../../components/accountsReceivable/AccountsReceivableResume";
 
+import { useClients } from "../../hooks/clients/useClients";
+
 export default function AccountsReceivableView() {
+  const [filter, setFilter] = useState("Todos");
+  const [search, setSearch] = useState("");
+
+  const { fecthActiveClients, fetchMonthInfo } = useClients();
+
+  useEffect(() => {
+    fecthActiveClients();
+    fetchMonthInfo();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -62,7 +74,12 @@ export default function AccountsReceivableView() {
                 width: "100%",
               }}
             >
-              <AccountsReceivableFilter />
+              <AccountsReceivableFilter
+                selected={filter}
+                setSelected={setFilter}
+                search={search}
+                setSearch={setSearch}
+              />
             </Box>
             <Box
               sx={{
@@ -72,7 +89,7 @@ export default function AccountsReceivableView() {
                 justifyContent: "center",
               }}
             >
-              <AccountsReceivableTable />
+              <AccountsReceivableTable filter={filter} search={search} />
             </Box>
           </Box>
         </Box>
