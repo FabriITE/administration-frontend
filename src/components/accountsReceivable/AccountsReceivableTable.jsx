@@ -13,20 +13,22 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import EditOutlinedIcon from "@mui/icons-material/ModeEditOutline";
 import DoneIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 import EditAccountsReceivableDlg from "./dialog/EditAccountsReceivableDlg";
 import RegisterPaymentDlg from "./dialog/RegisterPaymentDlg";
 import { useDispatch, useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { addSelectedClient, updateClientField } from "../../features/clients";
+import CancelClientDlg from "./dialog/CancelClientDlg";
 
 export default function AccountsReceivableTable({ filter, search }) {
   const [openInvoiceDlg, setOpenInvoiceDlg] = useState(false);
   const [openEditDlg, setOpenEditDlg] = useState(false);
+  const [openCancelClientDlg, setOpenCancelClientDlg] = useState(false);
 
   const dispatch = useDispatch();
   const clients = useSelector((state) => state.clients.clients);
-  console.log(clients);
   const [rowModesModel, setRowModesModel] = useState({});
 
   const handleOpenDialogInvoice = (row) => {
@@ -38,6 +40,12 @@ export default function AccountsReceivableTable({ filter, search }) {
     dispatch(addSelectedClient(row));
     setOpenEditDlg(true);
   };
+
+  const handleOpenDialogCancel = (row) => {
+    dispatch(addSelectedClient(row));
+    setOpenCancelClientDlg(true);
+  };
+
   const formatDate = (str) => {
     if (!str) return "";
 
@@ -74,7 +82,6 @@ export default function AccountsReceivableTable({ filter, search }) {
         })
       );
     });
-    console.log(newRow);
 
     return newRow;
   };
@@ -245,8 +252,14 @@ export default function AccountsReceivableTable({ filter, search }) {
           <GridActionsCellItem
             key="invoice"
             icon={<MoreHorizIcon />}
-            label="Factura"
+            label="Registrar pago"
             onClick={() => handleOpenDialogInvoice(params.row)}
+          />,
+          <GridActionsCellItem
+            key="cancel"
+            icon={<HighlightOffIcon />}
+            label="Dar de baja"
+            onClick={() => handleOpenDialogCancel(params.row)}
           />,
         ];
       },
@@ -310,6 +323,11 @@ export default function AccountsReceivableTable({ filter, search }) {
       <RegisterPaymentDlg open={openInvoiceDlg} setOpen={setOpenInvoiceDlg} />
 
       <EditAccountsReceivableDlg open={openEditDlg} setOpen={setOpenEditDlg} />
+
+      <CancelClientDlg
+        open={openCancelClientDlg}
+        setOpen={setOpenCancelClientDlg}
+      />
     </>
   );
 }

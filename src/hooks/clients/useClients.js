@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cancelClient,
   createClient,
   editClientInfo,
   getActiveClients,
@@ -41,11 +42,17 @@ export const useClients = () => {
     await fetchMonthInfo();
   };
 
+  const markCancelClient = async (client_id) => {
+    await cancelClient({ client_id: client_id });
+    await fecthActiveClients();
+    await fetchMonthInfo();
+  };
   return {
     fecthActiveClients,
     fetchMonthInfo,
     registerClient,
     registerClientPayment,
     editClient,
+    markCancelClient,
   };
 };

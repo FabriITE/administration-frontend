@@ -23,6 +23,7 @@ import GeneralLoader from "../../GeneralLoader";
 export default function RegisterPaymentDlg({ open, setOpen }) {
   const [openAddInvoiceDlg, setOpenAddInvoiceDlg] = useState(false);
   const [files, setFiles] = useState([]);
+  const [filesToDelete, setFilesToDelete] = useState([]);
   const selectedClient = useSelector((state) => state.clients.selectedClient);
   const { registerClientPayment } = useClients();
   const [isLoading, setIsLoading] = useState(false);
@@ -150,7 +151,14 @@ export default function RegisterPaymentDlg({ open, setOpen }) {
               <Typography fontWeight="bold" sx={{ mb: 1 }}>
                 Adjuntar comprobantes
               </Typography>
-              <FileUploadInput files={files} setFiles={setFiles} />
+              <FileUploadInput
+                files={files}
+                setFiles={setFiles}
+                destinyFolder={"Pagos_clientes"}
+                filesType={"Pagos_clientes"}
+                filesToDelete={filesToDelete}
+                setFilesToDelete={setFilesToDelete}
+              />
             </Box>
           </DialogContent>
         </form>

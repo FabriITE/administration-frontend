@@ -13,21 +13,22 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { editClientInfo } from "../../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
 import { useClients } from "../../../hooks/clients/useClients";
 import { errorAlert, successAlert } from "../../alerts/alerts";
 import GeneralLoader from "../../GeneralLoader";
+import { clearSelectedClient } from "../../../features/clients";
 
 export default function EditAccountsReceivableDlg({ open, setOpen }) {
   const selectedClient = useSelector((state) => state.clients.selectedClient);
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const { editClient } = useClients();
 
   const handleCloseDlg = () => {
     setOpen(false);
+    dispatch(clearSelectedClient());
   };
 
   const handleSubmit = async (e) => {

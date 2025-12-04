@@ -1,9 +1,14 @@
 import axios from "axios";
-import { API_URL } from "../../constants";
+import { API_URL, RRHH_API_URL } from "../../constants";
 
 const api = axios.create({
   // withCredentials: true,
   baseURL: API_URL,
+});
+
+const rrhhApi = axios.create({
+  // withCredentials: true,
+  baseURL: RRHH_API_URL,
 });
 
 // session
@@ -26,6 +31,8 @@ export const getCantonesOptions = async () => api.get("/getCantones");
 export const getCantonesFilter = async (data) =>
   api.post("/getCantonesFilter", data);
 export const getProvinciaOptions = async () => api.get("/getProvincias");
+export const cancelClient = async (clientId) =>
+  api.post("/cancelClient", clientId);
 
 // notifications
 
@@ -43,6 +50,9 @@ export const readAllNotifications = async (data) =>
   await api.post("/markAllAsRead", data);
 
 // files
-export const uploadFile = async (data) => await api.post("/uploadFile", data);
+export const uploadFile = async (data) =>
+  await rrhhApi.post("/uploadFile", data);
 export const downloadFile = async (data) =>
-  await api.post("/downloadFile", data);
+  await rrhhApi.post("/downloadFile", data);
+export const deleteFiles = async (data) =>
+  await rrhhApi.post("/deleteFiles", data);

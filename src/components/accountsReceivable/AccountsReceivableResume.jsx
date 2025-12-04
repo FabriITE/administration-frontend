@@ -25,13 +25,13 @@ export default function AccountsReceivableResume() {
     >
       <AccountsReceivableCard
         title="Total por Cobrar"
-        amount={`₡ ${month_resume.total_receivable}`}
+        amount={`$ ${month_resume.total_receivable}`}
         color="#fef2f2"
         icon={<Wallet color="#e70000" />}
       />
       <AccountsReceivableCard
         title="Pagos Confirmados"
-        amount={`₡ ${month_resume.total_charged}`}
+        amount={`$ ${month_resume.total_charged}`}
         color="#f0fdf4"
         icon={<TrendingUp color="#008000" />}
       />
