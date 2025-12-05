@@ -6,6 +6,7 @@ export default function AccountsReceivableFilter({
   setSelected,
   search,
   setSearch,
+  searchInactive,
 }) {
   // const [selected, setSelected] = useState("Todos");
 
@@ -60,6 +61,24 @@ export default function AccountsReceivableFilter({
               {btn}
             </Button>
           ))}
+          <Button
+            onClick={() => searchInactive("De baja")}
+            variant="outlined"
+            size="small"
+            sx={{
+              borderRadius: "20px",
+              bgcolor: selected === "De baja" ? "#103b56" : "transparent",
+              color: selected === "De baja" ? "#fff" : "inherit",
+              borderColor:
+                selected === "De baja" ? "#103b56" : "rgba(0, 0, 0, 0.23)",
+              "&:hover": {
+                bgcolor:
+                  selected === "De baja" ? "#0b2c40" : "rgba(16,59,86,0.1)",
+              },
+            }}
+          >
+            De baja
+          </Button>
         </Box>
 
         <Box

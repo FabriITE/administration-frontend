@@ -18,6 +18,7 @@ export const getSessionData = async () => api.get("/getSessionData");
 // clients
 
 export const getActiveClients = async () => api.get("/getActiveClients");
+export const getInactiveClients = async () => api.get("/getInactiveClients");
 export const editClientInfo = async (data) => api.post("/editClientInfo", data);
 export const registerPayment = async (data) =>
   api.post("/registerPayment", data);

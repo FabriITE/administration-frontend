@@ -4,6 +4,7 @@ import {
   createClient,
   editClientInfo,
   getActiveClients,
+  getInactiveClients,
   paymentsMonthResume,
   registerPayment,
 } from "../../utils/api";
@@ -22,6 +23,11 @@ export const useClients = () => {
   const fetchMonthInfo = async () => {
     const resume = await paymentsMonthResume({});
     dispatch(addMonthInfo(resume.data));
+  };
+
+  const fecthInactiveClients = async () => {
+    const data = await getInactiveClients();
+    dispatch(addClients(data.data));
   };
 
   const registerClient = async (newClient) => {
@@ -54,5 +60,6 @@ export const useClients = () => {
     registerClientPayment,
     editClient,
     markCancelClient,
+    fecthInactiveClients,
   };
 };

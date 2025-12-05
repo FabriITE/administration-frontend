@@ -14,10 +14,22 @@ export default function AccountsReceivableView() {
 
   const { fecthActiveClients, fetchMonthInfo } = useClients();
 
+  const { fecthInactiveClients } = useClients();
   useEffect(() => {
     fecthActiveClients();
     fetchMonthInfo();
   }, []);
+
+  useEffect(() => {
+    if (filter != "De baja") {
+      fecthActiveClients();
+    }
+  }, [filter]);
+
+  const searchInactive = async () => {
+    setFilter("De baja");
+    await fecthInactiveClients();
+  };
 
   return (
     <Box
@@ -79,6 +91,7 @@ export default function AccountsReceivableView() {
                 setSelected={setFilter}
                 search={search}
                 setSearch={setSearch}
+                searchInactive={searchInactive}
               />
             </Box>
             <Box

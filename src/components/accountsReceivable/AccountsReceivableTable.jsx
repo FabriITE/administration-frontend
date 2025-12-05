@@ -14,6 +14,7 @@ import EditOutlinedIcon from "@mui/icons-material/ModeEditOutline";
 import DoneIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 import EditAccountsReceivableDlg from "./dialog/EditAccountsReceivableDlg";
 import RegisterPaymentDlg from "./dialog/RegisterPaymentDlg";
@@ -251,7 +252,7 @@ export default function AccountsReceivableTable({ filter, search }) {
           />,
           <GridActionsCellItem
             key="invoice"
-            icon={<MoreHorizIcon />}
+            icon={<ReceiptLongIcon />}
             label="Registrar pago"
             onClick={() => handleOpenDialogInvoice(params.row)}
           />,
