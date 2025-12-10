@@ -27,6 +27,12 @@ export const createClient = async (data) => api.post("/createClient", data);
 export const paymentsMonthResume = async (data) =>
   api.post("/paymentsMonthResume", data);
 
+export const getSelectedClient = async (data) =>
+  api.post("/getSelectedClient", data);
+
+export const getPaymentHistory = async (data) =>
+  api.post("/getPaymentHistory", data);
+
 // places
 export const getCantonesOptions = async () => api.get("/getCantones");
 export const getCantonesFilter = async (data) =>
@@ -35,6 +41,8 @@ export const getProvinciaOptions = async () => api.get("/getProvincias");
 export const cancelClient = async (clientId) =>
   api.post("/cancelClient", clientId);
 
+export const uploadClients = async (clientsList) =>
+  api.post("/uploadClients", clientsList);
 // notifications
 
 export const getNotifications = async (data) =>

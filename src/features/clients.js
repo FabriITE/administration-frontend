@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   clients: [],
   selectedClient: null,
+  clientPaymentHistory: [],
 };
 
 const clientsSlice = createSlice({
@@ -30,6 +31,9 @@ const clientsSlice = createSlice({
         state.clients[clientIndex][field] = value;
       }
     },
+    addClientPaymentHistory(state, action) {
+      state.clientPaymentHistory = action.payload;
+    },
   },
 });
 
@@ -38,6 +42,7 @@ export const {
   addSelectedClient,
   clearSelectedClient,
   updateClientField,
+  addClientPaymentHistory,
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;

@@ -5,10 +5,16 @@ import {
   editClientInfo,
   getActiveClients,
   getInactiveClients,
+  getPaymentHistory,
+  getSelectedClient,
   paymentsMonthResume,
   registerPayment,
 } from "../../utils/api";
-import { addClients } from "../../features/clients";
+import {
+  addClientPaymentHistory,
+  addClients,
+  addSelectedClient,
+} from "../../features/clients";
 import { addMonthInfo } from "../../features/monthInfo";
 
 export const useClients = () => {
@@ -28,6 +34,16 @@ export const useClients = () => {
   const fecthInactiveClients = async () => {
     const data = await getInactiveClients();
     dispatch(addClients(data.data));
+  };
+
+  const fetchSelectedClient = async (san) => {
+    const client = await getSelectedClient({ san: san });
+    dispatch(addSelectedClient(client.data));
+  };
+
+  const fecthPaymentHistory = async (client_id) => {
+    const history = await getPaymentHistory({ client_id: client_id });
+    dispatch(addClientPaymentHistory(history.data));
   };
 
   const registerClient = async (newClient) => {
@@ -61,5 +77,7 @@ export const useClients = () => {
     editClient,
     markCancelClient,
     fecthInactiveClients,
+    fetchSelectedClient,
+    fecthPaymentHistory,
   };
 };

@@ -1,9 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import NewClientDlg from "./dialog/NewClientDlg";
+import ExcelReader from "../ExcelReader";
+import { useSelector } from "react-redux";
 
 export default function AccountsReceivableHeader() {
   const [open, setOpen] = useState(false);
+  const username = useSelector((state) => state.session.username);
+
   const handleCloseDialog = () => {
     setOpen(false);
   };
@@ -45,6 +49,7 @@ export default function AccountsReceivableHeader() {
           gap: "10px",
         }}
       >
+        {username == "luis.mendez@itellum.com" && <ExcelReader />}
         <Button
           onClick={handleOpenDialog}
           sx={{ bgcolor: "#103b56" }}

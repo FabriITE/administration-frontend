@@ -3,4 +3,8 @@ export const routes = {
     parentRoute: "/accountsreceivable",
     route: "/",
   },
+  clientHistory: {
+    parentRoute: "/accountsreceivable",
+    route: ":san",
+  },
 };

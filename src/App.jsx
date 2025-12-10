@@ -9,6 +9,7 @@ import { LOGIN_URL } from "../constants";
 import { useDispatch } from "react-redux";
 import { addSession } from "./features/session";
 import { useEffect } from "react";
+import ClientHistoryView from "./views/clientHistory/ClientHistoryView";
 function App() {
   const dispatch = useDispatch();
 
@@ -38,6 +39,10 @@ function App() {
           <Route
             path={routes.accountsreceivable.route}
             element={<AccountsReceivableView />}
+          />
+          <Route
+            path={`${routes.clientHistory.parentRoute}/${routes.clientHistory.route}`}
+            element={<ClientHistoryView />}
           />
         </Routes>
       </div>

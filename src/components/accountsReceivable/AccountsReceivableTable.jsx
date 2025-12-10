@@ -5,7 +5,7 @@ import {
   GridRowModes,
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
-import { Paper, Chip } from "@mui/material";
+import { Paper, Chip, Tooltip, Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,6 +15,7 @@ import DoneIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelIcon from "@mui/icons-material/CancelOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import HistoryIcon from "@mui/icons-material/History";
 
 import EditAccountsReceivableDlg from "./dialog/EditAccountsReceivableDlg";
 import RegisterPaymentDlg from "./dialog/RegisterPaymentDlg";
@@ -22,12 +23,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { addSelectedClient, updateClientField } from "../../features/clients";
 import CancelClientDlg from "./dialog/CancelClientDlg";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../models/routes";
 
 export default function AccountsReceivableTable({ filter, search }) {
   const [openInvoiceDlg, setOpenInvoiceDlg] = useState(false);
   const [openEditDlg, setOpenEditDlg] = useState(false);
   const [openCancelClientDlg, setOpenCancelClientDlg] = useState(false);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const clients = useSelector((state) => state.clients.clients);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -45,6 +49,11 @@ export default function AccountsReceivableTable({ filter, search }) {
   const handleOpenDialogCancel = (row) => {
     dispatch(addSelectedClient(row));
     setOpenCancelClientDlg(true);
+  };
+
+  const handleOpenHistory = (row) => {
+    dispatch(addSelectedClient(row));
+    navigate(`${routes.clientHistory.parentRoute}/${row.san}`);
   };
 
   const formatDate = (str) => {
@@ -220,7 +229,7 @@ export default function AccountsReceivableTable({ filter, search }) {
       field: "actions",
       type: "actions",
       headerName: "Acciones",
-      width: 110,
+      width: 150,
       getActions: (params) => {
         const { id } = params;
 
@@ -244,24 +253,40 @@ export default function AccountsReceivableTable({ filter, search }) {
         }
 
         return [
-          <GridActionsCellItem
-            key="edit"
-            icon={<EditOutlinedIcon />}
-            label="Editar"
-            onClick={() => handleOpenDialogEdit(params.row)}
-          />,
-          <GridActionsCellItem
-            key="invoice"
-            icon={<ReceiptLongIcon />}
-            label="Registrar pago"
-            onClick={() => handleOpenDialogInvoice(params.row)}
-          />,
-          <GridActionsCellItem
-            key="cancel"
-            icon={<HighlightOffIcon />}
-            label="Dar de baja"
-            onClick={() => handleOpenDialogCancel(params.row)}
-          />,
+          <>
+            <Tooltip title={<Typography>Editar</Typography>}>
+              <GridActionsCellItem
+                key="edit"
+                icon={<EditOutlinedIcon />}
+                label="Editar"
+                onClick={() => handleOpenDialogEdit(params.row)}
+              />
+            </Tooltip>
+            <Tooltip title={<Typography>Registrar pago</Typography>}>
+              <GridActionsCellItem
+                key="invoice"
+                icon={<ReceiptLongIcon />}
+                label="Registrar pago"
+                onClick={() => handleOpenDialogInvoice(params.row)}
+              />
+            </Tooltip>
+            <Tooltip title={<Typography>Historial de pagos</Typography>}>
+              <GridActionsCellItem
+                key="history"
+                icon={<HistoryIcon />}
+                label="Historial de pagos"
+                onClick={() => handleOpenHistory(params.row)}
+              />
+            </Tooltip>
+            <Tooltip title={<Typography>Dar de baja</Typography>}>
+              <GridActionsCellItem
+                key="cancel"
+                icon={<HighlightOffIcon />}
+                label="Dar de baja"
+                onClick={() => handleOpenDialogCancel(params.row)}
+              />
+            </Tooltip>
+          </>,
         ];
       },
     },
