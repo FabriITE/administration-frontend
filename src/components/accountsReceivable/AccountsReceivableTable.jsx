@@ -15,16 +15,17 @@ import HistoryIcon from "@mui/icons-material/History";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 import EditAccountsReceivableDlg from "./dialog/EditAccountsReceivableDlg";
 import RegisterPaymentDlg from "./dialog/RegisterPaymentDlg";
-import CancelClientDlg from "./dialog/CancelClientDlg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import { addSelectedClient } from "../../features/clients";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../models/routes";
+import ManageClientDlg from "./dialog/ManageClientDlg";
 
 export default function AccountsReceivableTable({ filter, search }) {
   const [openInvoiceDlg, setOpenInvoiceDlg] = useState(false);
@@ -134,7 +135,7 @@ export default function AccountsReceivableTable({ filter, search }) {
               sx={{
                 bgcolor: color,
                 color: "#fff",
-                width: 100,
+                width: "auto",
                 fontWeight: "bold",
               }}
             />
@@ -181,9 +182,9 @@ export default function AccountsReceivableTable({ filter, search }) {
             }}
           />,
           <GridActionsCellItem
-            icon={<HighlightOffIcon />}
-            label="Dar de baja"
-            title="Dar de baja"
+            icon={<ManageAccountsIcon />}
+            label="Mas Acciones"
+            title="Mas Acciones"
             onClick={() => {
               dispatch(addSelectedClient(params.row));
               setOpenCancelClientDlg(true);
@@ -256,7 +257,7 @@ export default function AccountsReceivableTable({ filter, search }) {
 
       <RegisterPaymentDlg open={openInvoiceDlg} setOpen={setOpenInvoiceDlg} />
       <EditAccountsReceivableDlg open={openEditDlg} setOpen={setOpenEditDlg} />
-      <CancelClientDlg
+      <ManageClientDlg
         open={openCancelClientDlg}
         setOpen={setOpenCancelClientDlg}
       />

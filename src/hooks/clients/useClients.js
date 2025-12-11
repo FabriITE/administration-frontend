@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   cancelClient,
+  clientActions,
   createClient,
   editClientInfo,
   getActiveClients,
@@ -19,8 +20,6 @@ import { addMonthInfo } from "../../features/monthInfo";
 
 export const useClients = () => {
   const dispatch = useDispatch();
-
-  //   const clienrs = useSelector((state) => state.session?.employee_id);
 
   const fecthActiveClients = async () => {
     const data = await getActiveClients();
@@ -69,6 +68,13 @@ export const useClients = () => {
     await fecthActiveClients();
     await fetchMonthInfo();
   };
+
+  const manageClientActions = async (data) => {
+    await clientActions(data);
+    await fecthActiveClients();
+    await fetchMonthInfo();
+  };
+
   return {
     fecthActiveClients,
     fetchMonthInfo,
@@ -79,5 +85,6 @@ export const useClients = () => {
     fecthInactiveClients,
     fetchSelectedClient,
     fecthPaymentHistory,
+    manageClientActions,
   };
 };

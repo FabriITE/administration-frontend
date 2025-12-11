@@ -26,12 +26,11 @@ export const addClientNotes = async (data) => api.post("/addClientNotes", data);
 export const createClient = async (data) => api.post("/createClient", data);
 export const paymentsMonthResume = async (data) =>
   api.post("/paymentsMonthResume", data);
-
 export const getSelectedClient = async (data) =>
   api.post("/getSelectedClient", data);
-
 export const getPaymentHistory = async (data) =>
   api.post("/getPaymentHistory", data);
+export const clientActions = async (data) => api.post("/clientActions", data);
 
 // places
 export const getCantonesOptions = async () => api.get("/getCantones");
