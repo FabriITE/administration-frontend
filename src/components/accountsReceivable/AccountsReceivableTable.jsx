@@ -146,7 +146,6 @@ export default function AccountsReceivableTable({ filter, search }) {
         field: "notes",
         headerName: "Notas",
         width: 400,
-        editable: true,
       },
       {
         field: "actions",

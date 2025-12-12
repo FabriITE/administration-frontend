@@ -41,12 +41,12 @@ export default function AccountsReceivableResume() {
         color="#eff6ff"
         icon={<TrendingDown color="#006bff" />}
       />
-      <AccountsReceivableCard
+      {/* <AccountsReceivableCard
         title="Tasa de Pago"
         amount={`${monthResume.total_transactions}`}
         color="#faf5ff"
         icon={<List color="#8001ffff" />}
-      />
+      /> */}
     </Box>
   );
 }
