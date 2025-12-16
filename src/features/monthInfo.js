@@ -11,9 +11,9 @@ const monthInfoSlice = createSlice({
   initialState,
   reducers: {
     addMonthInfo(state, action) {
-      state.active_clients = action.payload.active_clients;
-      state.total_charged = action.payload.total_charged;
-      state.total_receivable = action.payload.total_receivable;
+      state.active_clients = Number(action.payload.active_clients);
+      state.total_charged = Number(action.payload.total_charged);
+      state.total_receivable = Number(action.payload.total_receivable);
     },
   },
 });

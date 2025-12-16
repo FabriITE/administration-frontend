@@ -14,11 +14,10 @@ import {
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import PlaceIcon from "@mui/icons-material/Place";
 import PaymentIcon from "@mui/icons-material/Payment";
-import { CalendarMonth } from "@mui/icons-material";
+import { CalendarMonth, Mail } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import AutocompleteInput from "../../AutocompleteInput";
 import { errorAlert, successAlert } from "../../alerts/alerts";
-import { useDispatch } from "react-redux";
 import { useClients } from "../../../hooks/clients/useClients";
 import GeneralLoader from "../../GeneralLoader";
 
@@ -87,12 +86,10 @@ export default function NewClientDlg({ open, onClose }) {
           </DialogTitle>
 
           <DialogContent
-            sx={{ display: "flex", flexDirection: "column", gap: 3, p: 3 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 3, p: 2 }}
           >
             <Box>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <FingerprintIcon />
                 <Box sx={{ mt: "2%" }}>
                   <Typography variant="subtitle1" fontWeight="bold">
@@ -122,11 +119,31 @@ export default function NewClientDlg({ open, onClose }) {
                 </Grid>
               </Grid>
             </Box>
-            <Divider />
             <Box>
               <Box
                 sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
               >
+                <Mail />
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Correo Electronico
+                </Typography>
+              </Box>
+              <Box
+                sx={{ width: " 100%", marginLeft: "auto", marginRight: "auto" }}
+              >
+                <TextField
+                  name="email"
+                  type="email"
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  // onClick={(e) =>                  }
+                  required
+                />
+              </Box>
+            </Box>
+            <Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <PlaceIcon />
                 <Typography variant="subtitle1" fontWeight="bold">
                   Ubicación
@@ -153,7 +170,7 @@ export default function NewClientDlg({ open, onClose }) {
                 </Grid>
               </Grid>
             </Box>
-            <Divider />
+
             <Box>
               <Box
                 sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
@@ -187,8 +204,6 @@ export default function NewClientDlg({ open, onClose }) {
                 />
               </Box>
             </Box>
-            <Divider />
-
             <Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <PaymentIcon />

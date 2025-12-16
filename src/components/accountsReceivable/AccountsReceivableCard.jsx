@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import { Wallet } from "lucide-react";
 
 export default function AccountsReceivableCard({
   title,
@@ -9,18 +8,19 @@ export default function AccountsReceivableCard({
   variationColor,
   color,
   icon,
+  bgcolor,
 }) {
   return (
     <Card
       elevation={2}
       sx={{
         borderRadius: 4,
-        height: "120px",
+        height: "115px",
         width: "256px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        bgcolor: `${color}`,
+        borderLeft: `solid 3.5px ${bgcolor}`,
       }}
     >
       <CardContent
@@ -37,20 +37,41 @@ export default function AccountsReceivableCard({
         <Box
           sx={{
             textAlign: "initial",
-            height: "100%",
+            height: "70%",
             width: "90%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
           }}
         >
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", color: "gray" }}
+          <Box
+            sx={{
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "row",
+            }}
           >
-            {title}
-          </Typography>
-          <Box sx={{ height: "40px" }}>
+            <Box
+              sx={{
+                bgcolor: `${color}`,
+                height: "80%",
+                justifyContent: "center",
+                alignContent: "center",
+                display: "flex",
+                width: "15%",
+                borderRadius: "14%",
+                p: "2px",
+              }}
+            >
+              {icon}
+            </Box>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "gray", ml: "2%", mt: "3px" }}
+            >
+              {title}
+            </Typography>
+          </Box>
+          <Box sx={{ height: "40px", ml: "8%", display: "flex", mt: "8%" }}>
             <Typography
               variant="h6"
               sx={{ fontWeight: "bold", fontSize: "22px" }}
@@ -67,8 +88,6 @@ export default function AccountsReceivableCard({
             )}
           </Box>
         </Box>
-
-        <Box sx={{ position: "absolute", top: 18, right: 8 }}>{icon}</Box>
       </CardContent>
     </Card>
   );
