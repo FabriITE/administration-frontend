@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddInvoice from "./AddInvoice";
 import NotesIcon from "@mui/icons-material/Notes";
 import DateRangeIcon from "@mui/icons-material/DateRange";
@@ -27,6 +27,25 @@ export default function RegisterPaymentDlg({ open, setOpen }) {
   const selectedClient = useSelector((state) => state.clients.selectedClient);
   const { registerClientPayment } = useClients();
   const [isLoading, setIsLoading] = useState(false);
+
+  const [paymentMonths, setPaymentMonths] = useState(1);
+  const [paymentSugeration, setPaymentSugeration] = useState(0);
+
+  const calculatePayment = () => {
+    const monthlyPayment = selectedClient?.monthly_payment;
+
+    const sugeration = parseFloat(monthlyPayment) * parseFloat(paymentMonths);
+
+    setPaymentSugeration(sugeration);
+  };
+
+  useEffect(() => {
+    calculatePayment();
+  }, [paymentMonths]);
+
+  useEffect(() => {
+    calculatePayment();
+  }, [selectedClient]);
 
   const handleCloseDlg = () => {
     setOpen(false);
@@ -89,6 +108,8 @@ export default function RegisterPaymentDlg({ open, setOpen }) {
                   fullWidth
                   size="small"
                   type="number"
+                  value={paymentMonths}
+                  onChange={(e) => setPaymentMonths(e.target.value)}
                 />
               </Grid>
 
@@ -133,6 +154,8 @@ export default function RegisterPaymentDlg({ open, setOpen }) {
                   size="small"
                   type="number"
                   inputProps={{ step: "0.01", min: 0 }}
+                  value={paymentSugeration}
+                  onChange={(e) => setPaymentSugeration(e.target.value)}
                 />
               </Grid>
               <Grid item size={6}>
