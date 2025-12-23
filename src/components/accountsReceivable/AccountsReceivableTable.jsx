@@ -126,6 +126,10 @@ export default function AccountsReceivableTable({ filter, search }) {
               ? "#1aa51f"
               : params.value == "En Mora"
               ? "#ff9800"
+              : params.value == "Pendiente de reactivacion"
+              ? "#2F5D8A"
+              : params.value == "Pendiente de suspension"
+              ? "#E0B83F"
               : "#ef2213";
 
           return (

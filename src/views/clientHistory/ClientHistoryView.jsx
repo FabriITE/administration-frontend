@@ -57,9 +57,6 @@ export default function ClientHistoryView() {
             Historial de pagos
           </Typography>
         </Box>
-        <Box>
-          <HistoryAccountsResume />
-        </Box>
         <Box
           sx={{
             width: "100%",
