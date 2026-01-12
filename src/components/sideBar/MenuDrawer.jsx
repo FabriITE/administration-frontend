@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import NavigationMenu from "./NavigationMenu";
 import "./sideBarStyles.css";
 import { useSelector, useDispatch } from "react-redux";
-// import UserAvatar from "./UserAvatar";
+import UserAvatar from "./UserAvatar";
 import logo from "../../../src/assets/logo-white.webp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsCenter from "../notificationsCenter/NotificationsCenter";
@@ -29,15 +29,15 @@ const StyledDrawer = styled(Drawer)({
 });
 
 function MenuDrawer({ handleDrawerState, open }) {
-  // const [openNotifications, setOpenNotification] = useState(false);
-  // const dispatch = useDispatch();
-  // const notifications = useSelector((state) => state.notifications);
+  const [openNotifications, setOpenNotification] = useState(false);
+  const dispatch = useDispatch();
+  const notifications = useSelector((state) => state.notifications);
 
-  // const handleNotificationsState = () => {
-  //   if (!openNotifications) {
-  //   }
-  //   setOpenNotification(!openNotifications);
-  // };
+  const handleNotificationsState = () => {
+    if (!openNotifications) {
+    }
+    setOpenNotification(!openNotifications);
+  };
 
   return (
     <Box sx={{ width: drawerWidth + 33 }}>
@@ -75,12 +75,12 @@ function MenuDrawer({ handleDrawerState, open }) {
           />
           <Box>
             <IconButton
-              // onClick={handleNotificationsState}
+              onClick={handleNotificationsState}
               sx={{ color: "#000", ":focus": { outline: "none" } }}
               size="large"
             >
               <Badge
-                // badgeContent={notifications.unreadNotifications.length}
+                badgeContent={notifications?.unreadNotifications?.length || 0}
                 color="error"
               >
                 <NotificationsIcon
@@ -99,12 +99,12 @@ function MenuDrawer({ handleDrawerState, open }) {
             width: "100%",
           }}
         >
-          {/* <UserAvatar /> */}
+          <UserAvatar />
         </Box>
       </Drawer>
       <NotificationsCenter
-        // open={openNotifications}
-        // handleCloseCenter={handleNotificationsState}
+        open={openNotifications}
+        handleCloseCenter={handleNotificationsState}
       />
     </Box>
   );

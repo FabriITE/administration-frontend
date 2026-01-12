@@ -6,29 +6,37 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import NotificationCard from "./NotificationCard";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { useDispatch, useSelector } from "react-redux";
-// import { changeNotificationsFilter } from "../../features/notifications";
-// import { useNotifications } from "../../hooks/notifications/useNotifications";
+import { changeNotificationsFilter } from "../../features/notifications";
+import { useNotifications } from "../../hooks/notifications/useNotifications";
 
 export default function NotificationsCenter({ open, handleCloseCenter }) {
-  // const dispatch = useDispatch();
-  // const notifications = useSelector((state) => state.notifications);
-  // const notificationsFilter = useSelector(
-  //   (state) => state.notifications.notificationsFilter
-  // );
-  // const { markAsReadAllNotifications } = useNotifications();
+  const dispatch = useDispatch();
+  const notifications = useSelector((state) => state.notifications);
+  const notificationsFilter = useSelector(
+    (state) => state.notifications.notificationsFilter
+  );
+  const { markAsReadAllNotifications } = useNotifications();
 
-  // const changeFilters = (e) => {
-  //   dispatch(changeNotificationsFilter(e));
-  // };
+  const changeFilters = (e) => {
+    dispatch(changeNotificationsFilter(e));
+  };
 
-  // const handleReadAll = () => {
-  //   markAsReadAllNotifications();
-  // };
+  const handleReadAll = () => {
+    markAsReadAllNotifications();
+  };
+
+  const { fetchNotifications } = useNotifications();
+
+  useEffect(() => {
+    if (open) {
+      fetchNotifications();
+    }
+  }, [open]);
 
   return (
     <Drawer
@@ -88,13 +96,13 @@ export default function NotificationsCenter({ open, handleCloseCenter }) {
               width: "48%",
               padding: "0px",
               height: "30px",
-              // ":focus": { outlineWidth: 0 },
-              // bgcolor:
-              //   notificationsFilter == "unread" ? "#103B56" : "transparent",
-              // color: notificationsFilter == "read" ? "#103B56" : "#fff",
+              ":focus": { outlineWidth: 0 },
+              bgcolor:
+                notificationsFilter == "unread" ? "#103B56" : "transparent",
+              color: notificationsFilter == "read" ? "#103B56" : "#fff",
             }}
             value={"unread"}
-            // variant={notificationsFilter == "unread" ? "contained" : "text"}
+            variant={notificationsFilter == "unread" ? "contained" : "text"}
             onClick={(e) => changeFilters(e.currentTarget.value)}
           >
             No leídos
@@ -105,18 +113,18 @@ export default function NotificationsCenter({ open, handleCloseCenter }) {
               padding: "0px",
               height: "30px",
               ":focus": { outlineWidth: 0 },
-              // bgcolor:
-              //   notificationsFilter == "read" ? "#103B56" : "transparent",
-              // color: notificationsFilter == "unread" ? "#103B56" : "#fff",
+              bgcolor:
+                notificationsFilter == "read" ? "#103B56" : "transparent",
+              color: notificationsFilter == "unread" ? "#103B56" : "#fff",
             }}
             value={"read"}
-            // variant={notificationsFilter == "read" ? "contained" : "text"}
+            variant={notificationsFilter == "read" ? "contained" : "text"}
             onClick={(e) => changeFilters(e.currentTarget.value)}
           >
             leídos
           </Button>
         </Box>
-        {/* <Box sx={{ width: "50%", display: "flex", justifyContent: "end" }}>
+        <Box sx={{ width: "50%", display: "flex", justifyContent: "end" }}>
           {notificationsFilter == "unread" && (
             <Button
               sx={{
@@ -132,11 +140,11 @@ export default function NotificationsCenter({ open, handleCloseCenter }) {
               Leer todo
             </Button>
           )}
-        </Box> */}
+        </Box>
       </Box>
       <Divider />
       <Box sx={{ mt: 2, height: "82%" }}>
-        {/* <Box
+        <Box
           sx={{
             width: "100%",
             gap: "10px",
@@ -157,7 +165,7 @@ export default function NotificationsCenter({ open, handleCloseCenter }) {
               index={index}
             />
           ))}
-        </Box> */}
+        </Box>
       </Box>
     </Drawer>
   );

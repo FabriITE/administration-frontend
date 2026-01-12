@@ -44,8 +44,7 @@ export const uploadClients = async (clientsList) =>
   api.post("/uploadClients", clientsList);
 // notifications
 
-export const getNotifications = async (data) =>
-  await api.post("/getNotifications", data);
+export const getNotifications = async () => await api.get("/getNotifications");
 export const createNotification = async (data) =>
   await api.post("/createNotification", data);
 export const notifyEmployees = async (data) =>

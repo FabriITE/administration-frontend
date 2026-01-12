@@ -6,6 +6,8 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
   InputLabel,
   MenuItem,
@@ -18,25 +20,28 @@ import { useClients } from "../../../hooks/clients/useClients";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedClient } from "../../../features/clients";
 import { errorAlert, successAlert } from "../../alerts/alerts";
-import BuildIcon from "@mui/icons-material/Build";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 export default function ManageClientDlg({ open, setOpen }) {
   const [action, setAction] = useState("");
   const selectedClient = useSelector((state) => state.clients.selectedClient);
+
   const { manageClientActions } = useClients();
+
   const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleCloseDlg = () => {
+    setOpen(false);
+    dispatch(clearSelectedClient());
+  };
 
   const actions = [
     { value: "reactivation", label: "Reactivación" },
     { value: "suspension", label: "Suspensión" },
     { value: "cancelation", label: "Baja del servicio" },
   ];
-
-  const handleCloseDlg = () => {
-    setOpen(false);
-    dispatch(clearSelectedClient());
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,85 +53,80 @@ export default function ManageClientDlg({ open, setOpen }) {
 
     try {
       setIsLoading(true);
-      await manageClientActions({ ...selectedClient, action });
-      successAlert("Acción realizada correctamente", "colored");
+      await manageClientActions({ ...selectedClient, action: action });
       handleCloseDlg();
-    } catch {
-      errorAlert("Error al actualizar estado del cliente", "colored");
-      handleCloseDlg();
-    } finally {
       setIsLoading(false);
+      successAlert("Acción realizada correctamente", "colored");
+    } catch {
+      handleCloseDlg();
+      setIsLoading(false);
+      errorAlert("Error al actualizar estado del cliente", "colored");
     }
   };
 
   return (
     <>
       <Dialog open={open} fullWidth maxWidth="xs">
-        <DialogTitle
-          sx={{
-            backgroundColor: "#103b56",
-            color: "white",
-            fontWeight: "bold",
-          }}
-        >
-          Acciones del cliente
-        </DialogTitle>
-
-        <form onSubmit={handleSubmit} id="manageClientForm">
-          <DialogContent
-            sx={{ display: "flex", flexDirection: "column", gap: 3, p: 3 }}
-            dividers
+        <form onSubmit={handleSubmit}>
+          <DialogTitle
+            sx={{
+              height: "35px",
+              bgcolor: "#103b56",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            <Grid container spacing={2}>
-              <Grid item size={12}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    mb: 1,
-                  }}
+            <Typography variant="h6" color="white" fontWeight="bold">
+              Acciones al cliente{" "}
+            </Typography>
+          </DialogTitle>
+          <DialogContent sx={{ px: "6%" }} dividers>
+            <Grid sx={{ mt: "2%" }}>
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                  alignContent: "center",
+                  display: "flex",
+                }}
+              >
+                {" "}
+                Seleccione la acción que desea realizar
+              </Typography>
+            </Grid>
+            <Grid sx={{ pt: "6%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="actionLabel">Seleccione la accion</InputLabel>
+                <Select
+                  labelId="actionLabel"
+                  label="Seleccione la accion"
+                  fullWidth
+                  value={action}
+                  onChange={(e) => setAction(e.target.value)}
                 >
-                  <BuildIcon />
-                  <Typography fontWeight="bold">
-                    Seleccione la acción a realizar
-                  </Typography>
-                </Box>
-
-                <FormControl fullWidth size="small">
-                  <InputLabel id="actionLabel">Acción del cliente</InputLabel>
-                  <Select
-                    labelId="actionLabel"
-                    label="Acción del cliente"
-                    value={action}
-                    onChange={(e) => setAction(e.target.value)}
-                  >
-                    {actions.map((opt) => (
-                      <MenuItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+                  {actions.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </DialogContent>
+          <DialogActions sx={{ px: 2 }}>
+            <Button onClick={handleCloseDlg} variant="outlined" color="error">
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ backgroundColor: "#103b56" }}
+              disabled={isLoading}
+            >
+              Confirmar
+            </Button>
+          </DialogActions>
         </form>
-
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={handleCloseDlg} variant="outlined" color="error">
-            Cancelar
-          </Button>
-          <Button
-            type="submit"
-            form="manageClientForm"
-            variant="contained"
-            sx={{ backgroundColor: "#103b56" }}
-            disabled={isLoading}
-          >
-            Confirmar
-          </Button>
-        </DialogActions>
       </Dialog>
 
       {isLoading && <GeneralLoader />}

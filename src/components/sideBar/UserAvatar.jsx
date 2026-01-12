@@ -20,7 +20,6 @@ export default function UserAvatar() {
 
   const session = useSelector((state) => state.session);
 
-  console.log(session);
   return (
     <Box sx={{ position: "relative", mb: 1 }}>
       <Paper

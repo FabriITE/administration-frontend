@@ -32,6 +32,7 @@
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "read-excel-file": "^6.0.1",
+    "socket.io-client": "^4.8.3",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {

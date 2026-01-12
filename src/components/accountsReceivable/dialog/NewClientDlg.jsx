@@ -15,8 +15,10 @@ import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import PlaceIcon from "@mui/icons-material/Place";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { CalendarMonth, Mail } from "@mui/icons-material";
+import BusinessIcon from "@mui/icons-material/Business";
 import { useForm } from "react-hook-form";
 import AutocompleteInput from "../../AutocompleteInput";
+import BadgeIcon from "@mui/icons-material/Badge";
 import { errorAlert, successAlert } from "../../alerts/alerts";
 import { useClients } from "../../../hooks/clients/useClients";
 import GeneralLoader from "../../GeneralLoader";
@@ -45,6 +47,13 @@ export default function NewClientDlg({ open, onClose }) {
     canton: null,
     idCanton: null,
   });
+  const errorMessages = {
+    DUPLICATE_CLIENT: "Ya existe un cliente con ese nombre",
+    QB_ERROR: "Error al crear el cliente en QuickBooks",
+    VALIDATION_ERROR: "Datos inválidos, revise el formulario",
+    UNAUTHORIZED: "Su sesión expiró, vuelva a iniciar sesión",
+    INTERNAL_ERROR: "Error interno del servidor",
+  };
 
   const createCliente = async (e) => {
     e.preventDefault();
@@ -65,15 +74,28 @@ export default function NewClientDlg({ open, onClose }) {
       setIsLoading(false);
       successAlert("Cliente agregado correctamente", "colored");
     } catch (err) {
-      console.log(err);
       setIsLoading(false);
-      errorAlert("Error al agregar el cliente", "colored");
+
+      const backendCode = err?.response?.data?.code;
+
+      const message =
+        errorMessages[backendCode] ||
+        err?.response?.data?.message ||
+        "Error al agregar el cliente";
+
+      errorAlert(message, "colored");
     }
   };
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+      <Dialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        maxWidth="sm"
+        scroll="paper"
+      >
         <form onSubmit={createCliente}>
           <DialogTitle
             sx={{
@@ -86,69 +108,118 @@ export default function NewClientDlg({ open, onClose }) {
           </DialogTitle>
 
           <DialogContent
-            sx={{ display: "flex", flexDirection: "column", gap: 3, p: 2 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+              p: 2,
+              maxHeight: "70vh",
+              overflowY: "auto",
+              "&::-webkit-scrollbar": { width: "6px" },
+            }}
           >
+            {/* ===== NOMBRE ===== */}
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <FingerprintIcon />
-                <Box sx={{ mt: "2%" }}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    Identificación
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <Box sx={{ display: "flex", width: "50%", gap: 1 }}>
+                  <BadgeIcon />
+                  <Typography fontWeight="bold">Nombre del cliente</Typography>
+                </Box>
+
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <BusinessIcon />
+                  <Typography fontWeight="bold">
+                    Nombre de la empresa
                   </Typography>
                 </Box>
               </Box>
-              <Grid
-                sx={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                  display: "flex",
-                }}
-                container
-                spacing={2}
-              >
-                <Grid item size={6}>
+
+              <Grid container spacing={2}>
+                <Grid size={6}>
                   <TextField
                     fullWidth
                     size="small"
                     label="Nombre"
-                    name="name"
+                    name="display_name"
+                    required
                   />
                 </Grid>
-                <Grid item size={6}>
-                  <TextField fullWidth size="small" label="SAN" name="san" />
+
+                <Grid size={6}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="Nombre de la empresa"
+                    name="company_name"
+                  />
                 </Grid>
               </Grid>
             </Box>
+
+            {/* ===== DATOS GENERALES ===== */}
             <Box>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
-                <Mail />
-                <Typography variant="subtitle1" fontWeight="bold">
-                  Correo Electronico
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <FingerprintIcon />
+                <Typography fontWeight="bold">
+                  Datos generales del cliente
                 </Typography>
               </Box>
-              <Box
-                sx={{ width: " 100%", marginLeft: "auto", marginRight: "auto" }}
-              >
-                <TextField
-                  name="email"
-                  type="email"
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  // onClick={(e) =>                  }
-                  required
-                />
-              </Box>
+
+              <Grid container spacing={2}>
+                <Grid size={6}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="Número de teléfono"
+                    name="phone_number"
+                    required
+                  />
+                </Grid>
+
+                <Grid size={6}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="SAN"
+                    name="san"
+                    required
+                  />
+                </Grid>
+              </Grid>
             </Box>
+
+            {/* ===== CORREOS ===== */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Mail />
+                <Typography fontWeight="bold">Correo electrónico</Typography>
+              </Box>
+
+              <TextField
+                label="Correo Electrónico personal"
+                name="email"
+                type="email"
+                fullWidth
+                size="small"
+                required
+              />
+
+              <TextField
+                label="Correo Electrónico empresarial"
+                name="company_email"
+                type="email"
+                fullWidth
+                size="small"
+              />
+            </Box>
+
+            {/* ===== UBICACIÓN ===== */}
             <Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <PlaceIcon />
-                <Typography variant="subtitle1" fontWeight="bold">
-                  Ubicación
-                </Typography>
+                <Typography fontWeight="bold">Ubicación</Typography>
               </Box>
+
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <AutocompleteInput
@@ -159,6 +230,7 @@ export default function NewClientDlg({ open, onClose }) {
                     onChange={setSelectedProvincia}
                   />
                 </Grid>
+
                 <Grid size={6}>
                   <AutocompleteInput
                     control={control}
@@ -171,69 +243,58 @@ export default function NewClientDlg({ open, onClose }) {
               </Grid>
             </Box>
 
+            {/* ===== FECHA ===== */}
             <Box>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
-              >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CalendarMonth />
-                <Typography variant="subtitle1" fontWeight="bold">
-                  Fecha de instalacion
-                </Typography>
+                <Typography fontWeight="bold">Fecha de instalación</Typography>
               </Box>
-              <Box
-                sx={{ width: " 100%", marginLeft: "auto", marginRight: "auto" }}
-              >
-                <TextField
-                  name="start_date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  onClick={(e) =>
-                    e.currentTarget.querySelector("input")?.showPicker?.()
-                  }
-                  required
-                  sx={{
-                    backgroundColor: "white",
-                    "& input[type='date']::-webkit-calendar-picker-indicator": {
-                      filter: "invert(50%)",
-                      cursor: "pointer",
-                    },
-                  }}
-                />
-              </Box>
+
+              <TextField
+                name="start_date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+                size="small"
+                required
+                onClick={(e) =>
+                  e.currentTarget.querySelector("input")?.showPicker?.()
+                }
+                sx={{
+                  backgroundColor: "white",
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: "invert(50%)",
+                    cursor: "pointer",
+                  },
+                }}
+              />
             </Box>
+
+            {/* ===== PAGO ===== */}
             <Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <PaymentIcon />
-                <Typography variant="subtitle1" fontWeight="bold">
-                  Pago
-                </Typography>
+                <Typography fontWeight="bold">Pago</Typography>
               </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  display: "flex",
-                  gap: 2,
-                }}
-              >
+
+              <Box sx={{ display: "flex", gap: 2 }}>
                 <TextField
+                  fullWidth
                   name="payment_months"
                   label="Meses pagados"
                   size="small"
                   type="number"
-                  // inputProps={{ min: 0 }}
+                  required
                 />
 
                 <TextField
+                  fullWidth
                   name="monthly_payment"
                   label="Mensualidad"
                   size="small"
                   type="number"
                   inputProps={{ step: "0.01", min: 0 }}
+                  required
                 />
               </Box>
             </Box>
@@ -253,6 +314,7 @@ export default function NewClientDlg({ open, onClose }) {
           </DialogActions>
         </form>
       </Dialog>
+
       {isLoading && <GeneralLoader />}
     </>
   );
