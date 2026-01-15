@@ -5,6 +5,7 @@ import {
   createClient,
   editClientInfo,
   getActiveClients,
+  getClientQbInfo,
   getInactiveClients,
   getPaymentHistory,
   getSelectedClient,
@@ -35,9 +36,16 @@ export const useClients = () => {
     dispatch(addClients(data.data));
   };
 
-  const fetchSelectedClient = async (san) => {
+  const fetchSelectedClient = async (san, selectQbInfo) => {
     const client = await getSelectedClient({ san: san });
-    dispatch(addSelectedClient(client.data));
+    let qb_info = {};
+    if (selectQbInfo) {
+      qb_info = await getClientQbInfo({
+        customer_id: client.data.qb_customer_id,
+      });
+    }
+
+    dispatch(addSelectedClient({ ...client.data, ...qb_info.data }));
   };
 
   const fecthPaymentHistory = async (client_id) => {
@@ -70,9 +78,13 @@ export const useClients = () => {
   };
 
   const manageClientActions = async (data) => {
-    await clientActions(data);
-    await fecthActiveClients();
-    await fetchMonthInfo();
+    try {
+      await clientActions(data);
+      await fecthActiveClients();
+      await fetchMonthInfo();
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   };
 
   return {

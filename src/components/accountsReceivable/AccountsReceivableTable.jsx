@@ -16,7 +16,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditAccountsReceivableDlg from "./dialog/EditAccountsReceivableDlg";
 import RegisterPaymentDlg from "./dialog/RegisterPaymentDlg";
 
@@ -26,11 +26,14 @@ import { addSelectedClient } from "../../features/clients";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../models/routes";
 import ManageClientDlg from "./dialog/ManageClientDlg";
+import ClientDetailsDlg from "./dialog/ClientDetailsDlg";
 
 export default function AccountsReceivableTable({ filter, search }) {
   const [openInvoiceDlg, setOpenInvoiceDlg] = useState(false);
   const [openEditDlg, setOpenEditDlg] = useState(false);
   const [openCancelClientDlg, setOpenCancelClientDlg] = useState(false);
+  const [openClientDetails, setOpenClientDetails] = useState(false);
+  const [selectedSan, setSelectedSan] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -155,7 +158,7 @@ export default function AccountsReceivableTable({ filter, search }) {
         field: "actions",
         type: "actions",
         headerName: "Acciones",
-        width: 150,
+        width: 190,
         getActions: (params) => [
           <GridActionsCellItem
             icon={<EditOutlinedIcon />}
@@ -182,6 +185,15 @@ export default function AccountsReceivableTable({ filter, search }) {
             onClick={() => {
               dispatch(addSelectedClient(params.row));
               navigate(`${routes.clientHistory.parentRoute}/${params.row.san}`);
+            }}
+          />,
+          <GridActionsCellItem
+            icon={<MoreHorizIcon />}
+            label="Detalles"
+            title="Detalles del cliente"
+            onClick={() => {
+              setSelectedSan(params.row.san);
+              setOpenClientDetails(true);
             }}
           />,
           <GridActionsCellItem
@@ -263,6 +275,11 @@ export default function AccountsReceivableTable({ filter, search }) {
       <ManageClientDlg
         open={openCancelClientDlg}
         setOpen={setOpenCancelClientDlg}
+      />
+      <ClientDetailsDlg
+        open={openClientDetails}
+        setOpen={setOpenClientDetails}
+        selectedSan={selectedSan}
       />
     </>
   );

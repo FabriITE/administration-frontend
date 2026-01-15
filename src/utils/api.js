@@ -63,3 +63,8 @@ export const downloadFile = async (data) =>
   await rrhhApi.post("/downloadFile", data);
 export const deleteFiles = async (data) =>
   await rrhhApi.post("/deleteFiles", data);
+
+// quickbooks
+
+export const getClientQbInfo = async (data) =>
+  await api.post("/quickbooks/customer", data);

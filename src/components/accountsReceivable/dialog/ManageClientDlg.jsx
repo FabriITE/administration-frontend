@@ -53,14 +53,30 @@ export default function ManageClientDlg({ open, setOpen }) {
 
     try {
       setIsLoading(true);
-      await manageClientActions({ ...selectedClient, action: action });
-      handleCloseDlg();
-      setIsLoading(false);
+
+      await manageClientActions({
+        ...selectedClient,
+        action: action,
+      });
+
       successAlert("Acción realizada correctamente", "colored");
-    } catch {
       handleCloseDlg();
+    } catch (err) {
+      console.error("Error backend:", err);
+
+      let message = "Error al actualizar estado del cliente";
+
+      if (err?.error?.message) {
+        message = err.error.message;
+      }
+
+      if (err?.source === "quickbooks") {
+        message = `QuickBooks: ${message}`;
+      }
+
+      errorAlert(message, "colored");
+    } finally {
       setIsLoading(false);
-      errorAlert("Error al actualizar estado del cliente", "colored");
     }
   };
 
