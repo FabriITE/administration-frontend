@@ -20,6 +20,10 @@ export default function UserAvatar() {
 
   const session = useSelector((state) => state.session);
 
+  const handleRedirect = () => {
+    window.location = "https://itellumsat.com/";
+  };
+
   return (
     <Box sx={{ position: "relative", mb: 1 }}>
       <Paper
@@ -85,6 +89,7 @@ export default function UserAvatar() {
             }}
           >
             <Button
+              onClick={() => handleRedirect()}
               startIcon={
                 <LogoutIcon sx={{ transform: "scaleX(-1)", color: "red" }} />
               }
@@ -93,14 +98,14 @@ export default function UserAvatar() {
                 height: 50,
                 justifyContent: "center",
                 color: "white",
-                fontSize: "0.75rem",
+                fontSize: "0.90rem",
                 fontWeight: "bold",
                 ":focus": { outlineWidth: "0" },
                 textTransform: "none",
                 "&:hover": { bgcolor: "gray" },
               }}
             >
-              SALIR
+              Salir
             </Button>
           </Paper>
         </Collapse>
