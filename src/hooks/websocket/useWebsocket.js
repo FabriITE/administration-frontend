@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotifications } from "../notifications/useNotifications";
+import { useClients } from "../clients/useClients";
 
 export const useWebSocket = (socketInstance, employeeId) => {
   const dispatch = useDispatch();
   const { fetchNotifications } = useNotifications();
+  const { fetchMonthInfo, fecthActiveClients } = useClients();
   const employee_id = useSelector((state) => state.session?.employee_id);
-    
+
   useEffect(() => {
     if (!socketInstance) return;
 
@@ -21,6 +23,8 @@ export const useWebSocket = (socketInstance, employeeId) => {
     socketInstance.on("newNotification", (data) => {
       console.log("Nueva notificación:");
       fetchNotifications(employee_id);
+      fecthActiveClients();
+      fetchMonthInfo();
     });
 
     return () => {

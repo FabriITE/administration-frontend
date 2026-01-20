@@ -84,7 +84,14 @@ export default function ClientDetailsDlg({ open, setOpen, selectedSan }) {
         ) : (
           <>
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  marginBottom: "8px",
+                }}
+              >
                 <BusinessIcon />
                 <Typography fontWeight="bold">Datos del cliente</Typography>
               </Box>
@@ -137,11 +144,15 @@ export default function ClientDetailsDlg({ open, setOpen, selectedSan }) {
               </Grid>
             </Box>
 
-            <Divider />
-
-            {/* ===== CONTACTO ===== */}
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  marginBottom: "8px",
+                }}
+              >
                 <MailIcon />
                 <Typography fontWeight="bold">Contacto</Typography>
               </Box>
@@ -157,10 +168,15 @@ export default function ClientDetailsDlg({ open, setOpen, selectedSan }) {
               />
             </Box>
 
-            <Divider />
-
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  marginBottom: "8px",
+                }}
+              >
                 <AccountBalanceWalletIcon />
                 <Typography fontWeight="bold">
                   Información financiera
@@ -194,10 +210,15 @@ export default function ClientDetailsDlg({ open, setOpen, selectedSan }) {
               </Grid>
             </Box>
 
-            <Divider />
-
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  marginBottom: "8px",
+                }}
+              >
                 <CalendarMonthIcon />
                 <Typography fontWeight="bold">Fechas</Typography>
               </Box>

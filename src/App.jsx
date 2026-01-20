@@ -17,7 +17,7 @@ import { useWebSocket } from "./hooks/websocket/useWebsocket";
 function App() {
   const dispatch = useDispatch();
   const employeesId = useSelector((state) => state.session.employee_id);
-  const [socketInstance] = useWebSocketConexion(employeesId);
+  const [socketInstance] = useWebSocketConexion();
   const webSocket = useWebSocket(socketInstance);
   const { fetchNotifications } = useNotifications();
 
