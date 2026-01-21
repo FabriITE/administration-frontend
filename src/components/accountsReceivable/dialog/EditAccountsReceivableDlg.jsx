@@ -34,15 +34,48 @@ export default function EditAccountsReceivableDlg({ open, setOpen }) {
     dispatch(clearSelectedClient());
   };
 
+  const getChangedFields = (formData, originalData) => {
+    const changed = {};
+
+    for (const [key, value] of Object.entries(formData)) {
+      const originalValue = originalData?.[key];
+
+      const normalizedValue = value === "" ? null : value;
+      const normalizedOriginal =
+        originalValue === "" || originalValue === undefined
+          ? null
+          : String(originalValue);
+
+      if (String(normalizedValue) !== String(normalizedOriginal)) {
+        changed[key] = value;
+      }
+    }
+
+    return changed;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(e.target));
-    data.client_id = selectedClient?.client_id;
+    const formData = Object.fromEntries(new FormData(e.target));
+
+    const changedFields = getChangedFields(formData, selectedClient);
+
+    if (Object.keys(changedFields).length === 0) {
+      successAlert("No se detectaron cambios", "colored");
+      handleCloseDlg();
+      return;
+    }
+
+    changedFields.client_id = selectedClient?.client_id;
+    changedFields.qb_customer_id = selectedClient?.qb_customer_id;  
 
     try {
       setIsLoading(true);
-      await editClient(data);
+      await editClient({
+        changed_fields: changedFields,
+        complete_data: { ...formData, client_id: selectedClient?.client_id },
+      });
       successAlert("Cliente actualizado correctamente", "colored");
       handleCloseDlg();
     } catch (error) {
@@ -72,7 +105,7 @@ export default function EditAccountsReceivableDlg({ open, setOpen }) {
             dividers
           >
             <Grid container spacing={2}>
-              <Grid item size={12}>
+              <Grid item size={6}>
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
                 >
@@ -88,7 +121,7 @@ export default function EditAccountsReceivableDlg({ open, setOpen }) {
                 />
               </Grid>
 
-              <Grid item size={12}>
+              <Grid item size={6}>
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
                 >
@@ -108,20 +141,33 @@ export default function EditAccountsReceivableDlg({ open, setOpen }) {
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
                 >
-                  <InfoIcon />
-                  <Typography fontWeight="bold">Estado</Typography>
+                  <PersonIcon />
+                  <Typography fontWeight="bold">
+                    Nombre de la empresa
+                  </Typography>
                 </Box>
-                <Select
+                <TextField
                   size="small"
-                  name="status"
-                  defaultValue={selectedClient?.status}
+                  name="company_name"
+                  defaultValue={selectedClient?.company_name}
                   fullWidth
                   required
+                />
+              </Grid>
+              <Grid item size={6}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
                 >
-                  <MenuItem value="Activo">Activo</MenuItem>
-                  <MenuItem value="Pendiente">Pendiente</MenuItem>
-                  <MenuItem value="En mora">En mora</MenuItem>
-                </Select>
+                  <PaymentsIcon />
+                  <Typography fontWeight="bold">Numero de telefono</Typography>
+                </Box>
+                <TextField
+                  size="small"
+                  name="phone"
+                  defaultValue={selectedClient?.phone}
+                  fullWidth
+                  required
+                />
               </Grid>
 
               <Grid item size={6}>
